@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo " deleting cgroups"
+
+#root group, group above all other groups
+rootGroup='cgroup'
+
+#groups according to type
+groupCpu='cpuset'
+groupMemory='memory'
+groupIO='blkio'
+
+#subgroups in the types
+cpuGroup1='test'
+
+rmdir  '/sys/fs/'$rootGroup'/'$groupCpu'/'$cpuGroup1
+
+umount '/sys/fs/'$rootGroup'/'$groupCpu
+umount '/sys/fs/'$rootGroup
+

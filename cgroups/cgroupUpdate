@@ -1,0 +1,4 @@
+ cgconfigparser -l /etc/cgconfig.conf
+
+
+ /usr/bin/cgexec -g cpu,memory,cpuset:daemons ls
