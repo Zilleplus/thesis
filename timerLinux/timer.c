@@ -11,7 +11,13 @@
 
 #define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
                         } while (0)
-static int test=0;
+#define toggleTime_ns 1000
+
+static gpio_state=0;
+
+/*
+ * print out the properties of the signal
+ */
 static void
 print_siginfo(siginfo_t *si)
 {
@@ -29,18 +35,31 @@ print_siginfo(siginfo_t *si)
     else
         printf("    overrun count = %d\n", or);
 }
-
+/*
+ * called each time timer signals it
+ */
 static void
 handler(int sig, siginfo_t *si, void *uc)
 {
     /* Note: calling printf() from a signal handler is not
        strictly correct, since printf() is not async-signal-safe;
        see signal(7) */
-    test++;
-    printf("handler called");
-    printf("Caught signal %d\n", sig);
-    print_siginfo(si);
-    //signal(sig, SIG_IGN);
+    /*
+     * printf("handler called");
+     * printf("Caught signal %d\n", sig);
+     * print_siginfo(si);
+     */
+    /* now swap the signal on the gpio */
+    if(gpio_state){
+        gpio_state=0;
+        /* put gpio low */
+    }else{
+        gpio_state=1;
+        /* put gpio high */
+    }
+    printf("toggling gpio on %d \n",gpio_state);
+    fflush(stdout);
+    /* signal(sig, SIG_IGN); *//*disable signals to stop the timer from calling handler*/
 }
 
 int
@@ -118,9 +137,8 @@ main(int argc, char *argv[])
      *     struct timespec it_value;     Initial expiration
      * }; 
      */
-    freq_nanosecs = atoll(argv[2]); /* Convert string to long long integer */
-    its.it_value.tv_sec = freq_nanosecs / 1000000000;
-    its.it_value.tv_nsec = freq_nanosecs % 1000000000;
+    its.it_value.tv_sec = toggleTime_ns / 1000000000;
+    its.it_value.tv_nsec = toggleTime_ns % 1000000000;
     its.it_interval.tv_sec = its.it_value.tv_sec;
     its.it_interval.tv_nsec = its.it_value.tv_nsec;
 
@@ -133,18 +151,14 @@ main(int argc, char *argv[])
          errExit("timer_settime");
     /* --------------------------------------------------------*/
 
-    /* Sleep for a while; meanwhile, the timer may expire
-       multiple times */
-
-    printf("Sleeping for %d seconds\n", atoi(argv[1]));
-    sleep(atoi(argv[1]));
-
     /* Unlock the timer signal, so that timer notification
        can be delivered */
 
     printf("Unblocking signal %d\n", SIG);
     if (sigprocmask(SIG_UNBLOCK, &mask, NULL) == -1)
         errExit("sigprocmask");
+    /* and wait forever */
+
     while(1) {
         sleep(1);
     }
