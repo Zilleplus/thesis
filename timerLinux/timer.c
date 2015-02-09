@@ -14,7 +14,41 @@
 #define toggleTime_ns 1000
 
 static gpio_state=0;
+static FILE *output;
 
+/*
+ * init the gpio
+ */
+static int
+init_gpio(void)
+{
+    /* select the port */
+    FILE *fp = fopen("/sys/class/gpio/export", "w");
+    if( !fp )
+    {
+      printf("error open export file");
+      return 1;
+    }
+    fprintf(fp, "%d", 192);
+    fclose(fp);
+
+    /* set the direction */
+    fp = fopen("/sys/class/gpio/gpio192/direction", "w");
+    if( !fp )
+    {
+      printf("error open export file");
+      return 1;
+    }
+    fprintf(fp, "%s", "out");
+    fclose(fp);
+
+    return 0;
+}
+static int
+close_gpio(){
+    fclose(output);
+    return 0;
+}
 /*
  * print out the properties of the signal
  */
@@ -52,11 +86,14 @@ handler(int sig, siginfo_t *si, void *uc)
     /* now swap the signal on the gpio */
     if(gpio_state){
         gpio_state=0;
-        /* put gpio low */
     }else{
         gpio_state=1;
-        /* put gpio high */
     }
+    output = fopen("/sys/class/gpio/gpio192/value", "w");
+    fprintf(output, "%d", gpio_state);
+    
+    fclose(output);
+    
     printf("toggling gpio on %d \n",gpio_state);
     fflush(stdout);
     /* signal(sig, SIG_IGN); *//*disable signals to stop the timer from calling handler*/
@@ -72,11 +109,8 @@ main(int argc, char *argv[])
     sigset_t mask;
     struct sigaction sa;
 
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <sleep-secs> <freq-nanosecs>\n",
-                argv[0]);
-        exit(EXIT_FAILURE);
-    }
+    /* prepare the output */
+    init_gpio();
 
     /* --------------------------------------------------------*/
     /* Establish handler for timer signal */
