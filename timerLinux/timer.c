@@ -11,7 +11,7 @@
 
 #define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
                         } while (0)
-#define toggleTime_ns 1000
+#define toggleTime_ns 100000
 
 static gpio_state=0;
 static FILE *output;
@@ -29,11 +29,11 @@ init_gpio(void)
       printf("error open export file");
       return 1;
     }
-    fprintf(fp, "%d", 192);
+    fprintf(fp, "%d", 191);
     fclose(fp);
 
     /* set the direction */
-    fp = fopen("/sys/class/gpio/gpio192/direction", "w");
+    fp = fopen("/sys/class/gpio/gpio191/direction", "w");
     if( !fp )
     {
       printf("error open export file");
@@ -89,13 +89,12 @@ handler(int sig, siginfo_t *si, void *uc)
     }else{
         gpio_state=1;
     }
-    output = fopen("/sys/class/gpio/gpio192/value", "w");
+    output = fopen("/sys/class/gpio/gpio191/value", "w");
     fprintf(output, "%d", gpio_state);
-    
     fclose(output);
     
-    printf("toggling gpio on %d \n",gpio_state);
-    fflush(stdout);
+    //printf("toggling gpio on %d \n",gpio_state);
+    //fflush(stdout);
     /* signal(sig, SIG_IGN); *//*disable signals to stop the timer from calling handler*/
 }
 
@@ -115,7 +114,6 @@ main(int argc, char *argv[])
     /* --------------------------------------------------------*/
     /* Establish handler for timer signal */
 
-    printf("Establishing handler for signal %d\n", SIG);
     sa.sa_flags = SA_SIGINFO; /* select sa_sigaction as handler for the signal */
     sa.sa_sigaction = handler; /* enter fnnction handler as the handler */
     sigemptyset(&sa.sa_mask); /*  set the signalmask to accept all kinds of signals  */
@@ -128,7 +126,6 @@ main(int argc, char *argv[])
     /* --------------------------------------------------------*/
     /* Block timer signal temporarily */
 
-    printf("Blocking signal %d\n", SIG);
     sigemptyset(&mask); /* init sigset_t struct */
     sigaddset(&mask, SIG);/* add correct mask to it */
     /*
@@ -155,8 +152,6 @@ main(int argc, char *argv[])
     sev.sigev_value.sival_ptr = &timerid;
     if (timer_create(CLOCKID, &sev, &timerid) == -1)
         errExit("timer_create");
-
-    printf("timer ID is 0x%lx\n", (long) timerid);
 
     /* Start the timer */
     /* struct itimerspec its; */
@@ -188,7 +183,6 @@ main(int argc, char *argv[])
     /* Unlock the timer signal, so that timer notification
        can be delivered */
 
-    printf("Unblocking signal %d\n", SIG);
     if (sigprocmask(SIG_UNBLOCK, &mask, NULL) == -1)
         errExit("sigprocmask");
     /* and wait forever */
