@@ -1,2 +1,2 @@
 #!/bin/bash
-apt-get intall cgroup-bin
+apt-get install cgroup-bin
