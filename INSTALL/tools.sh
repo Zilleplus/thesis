@@ -7,3 +7,5 @@ resize2fs /dev/mmcblk0p1
 apt-get install git
 apt-get install build-essential
 apt-get install vim
+apt-get install stress
+
