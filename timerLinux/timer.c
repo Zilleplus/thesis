@@ -11,10 +11,11 @@
 
 #define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
                         } while (0)
-#define toggleTime_ns 100000
+#define toggleTime_ns 1000000
 
 static gpio_state=0;
 static FILE *output;
+static int needToggle=0;/* is set when a signal occurs */
 
 /*
  * init the gpio
@@ -32,7 +33,7 @@ init_gpio(void)
     fprintf(fp, "%d", 191);
     fclose(fp);
 
-    /* set the direction */
+    /* SET THE DIRECTION */
     fp = fopen("/sys/class/gpio/gpio191/direction", "w");
     if( !fp )
     {
@@ -89,9 +90,7 @@ handler(int sig, siginfo_t *si, void *uc)
     }else{
         gpio_state=1;
     }
-    output = fopen("/sys/class/gpio/gpio191/value", "w");
-    fprintf(output, "%d", gpio_state);
-    fclose(output);
+    needToggle=1;/* write it out in main */    
     
     //printf("toggling gpio on %d \n",gpio_state);
     //fflush(stdout);
@@ -166,8 +165,8 @@ main(int argc, char *argv[])
      *     struct timespec it_value;     Initial expiration
      * }; 
      */
-    its.it_value.tv_sec = toggleTime_ns / 1000000000;
-    its.it_value.tv_nsec = toggleTime_ns % 1000000000;
+    its.it_value.tv_sec = 0;//toggleTime_ns / 1000000000;
+    its.it_value.tv_nsec = 100000;//toggleTime_ns % 1000000000;
     its.it_interval.tv_sec = its.it_value.tv_sec;
     its.it_interval.tv_nsec = its.it_value.tv_nsec;
 
@@ -186,9 +185,14 @@ main(int argc, char *argv[])
     if (sigprocmask(SIG_UNBLOCK, &mask, NULL) == -1)
         errExit("sigprocmask");
     /* and wait forever */
-
+    output = fopen("/sys/class/gpio/gpio191/value", "w");
     while(1) {
-        sleep(1);
+        if(needToggle==1){ /* if a signal flagged toggle */
+            fprintf(output, "%d", gpio_state);
+            fflush(output);     
+            needToggle=0;/* wait for the next one */
+        }
     }
-    exit(EXIT_SUCCESS);
+    fclose(output);
+    EXIT(EXIT_SUCCESS);
 }
