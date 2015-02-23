@@ -34,7 +34,8 @@ plot(bins,counts);title('pdf function of the above samples');
 
 figure(3);
 subplot(2,1,1);
-semilogy(dataWithLoad);
+semilogy(dataWithLoad);title('samples in function of time with stressed OS');
 subplot(2,1,2);
-[counts, bins] = ksdensity(dataWithLoad);
-plot(bins,counts);
+range = 0:14000;
+[counts, bins] = hist(dataWithLoad);
+plot(bins,counts);title('pdf function of the above samples');
