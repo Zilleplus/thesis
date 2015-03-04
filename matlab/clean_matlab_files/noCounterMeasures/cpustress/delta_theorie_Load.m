@@ -14,30 +14,34 @@ meanDelta=mean(delta)
 % both of the pfs
 figure(1);
 subplot(2,1,1);
-xrange = -5:5;
+xrange = -10:10;
 [f, x] = hist(delta,xrange);
 bar(x, f/sum(f)/(x(2)-x(1)));title('PDF delta');
-xlabel('absolute value');ylabel('probability');
+xlabel('waarde delta');ylabel('kans');
 
 subplot(2,1,2);
-xrange = 0:5;
+xrange = 0:10;
 [f, x] = hist(delta_abs,xrange);
 bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta)');
-xlabel('absolute value');ylabel('probability');
+xlabel('absolute waarde delta');ylabel('kans');
 
 figure(2);
 subplot(2,1,1);
-plot(LoadTimes);title('Time measurements with load');
-xlabel('rank of sample');ylabel('value');
+plot(LoadTimes);title('samples');
+xlabel('sample nummer');ylabel('waarde');
 
 subplot(2,1,2);
 LoadTimes(LoadTimes > 130) = [];
 LoadTimes(LoadTimes < 50) = [];
-plot(LoadTimes);title('Time measurements with load and without insanely high/low values');
-xlabel('rank of sample');ylabel('value');
+plot(LoadTimes);title('samples met een waarde tussen 50 en 130');
+xlabel('sample nummer');ylabel('waarde');
+
+% variance delta
 
 % cut out the extreme values
 delta_abs(delta_abs > 15) = [];
 delta_abs(delta_abs < -15) = [];
 
-var_delta_abs = var(delta_abs)
+% calculate mean and variance
+varianceDeltaAbs=var(delta_abs)
+meanDeltaAbs=mean(delta_abs)
