@@ -69,7 +69,7 @@ main(int argc, char *argv[])
     struct itimerspec *time_till_exp = malloc(sizeof(struct itimerspec));
 
     int N;
-    for(N=1;N<atoi(argv[1]);N++){
+    for(N=1;N<atoi(argv[1]);N=N+10){
     	/* allocate the needed data on stack */
     	int i;int j;
     	double A[N],B[N],C[N],D[N];
@@ -86,10 +86,14 @@ main(int argc, char *argv[])
 	}
 	/* measure the executed time */
         timer_gettime(timerid,time_till_exp);
+	/* get the time the operations took */
 	long timeExecute = 99999999 - (*time_till_exp).it_value.tv_nsec; 
+	/* find time for each calculation */
 	double timePerCalulation =  ((double)timeExecute) / (N* REPEAT);
+	/* find operations per second */
 	double flps = 1 / timePerCalulation ;
-        printf("%f \n",flps); 	    
+	/* send it to the terminal ~*/
+        printf("%f ",flps); 	    
         fflush(stdout);
     }
     exit(EXIT_SUCCESS);
