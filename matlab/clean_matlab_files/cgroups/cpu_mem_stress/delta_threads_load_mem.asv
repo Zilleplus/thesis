@@ -15,13 +15,13 @@ MainPath = 'C:\Users\zille_000\Documents\MEGA\thesis\thesis\raw_data_tests\Optim
 %
 %%
 % ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
-% stress with malloc experiment 2
+% stress with calloc experiment 2
 % ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 MainPath = 'C:\Users\zille_000\Documents\MEGA\thesis\thesis\raw_data_tests\OptimizedTimer\cpu_memory_stress\withCgroup\';
 % 1 * 1G
 % pathFiles = strcat(MainPath,'experiment2_C_2_3_stressed_C1_squared_C0_lazy\1G_1T\');
 % 16 * 64M:
-% pathFiles = strcat(MainPath,'experiment2_C_2_3_stressed_C1_squared_C0_lazy\16_1G_1T\');
+pathFiles = strcat(MainPath,'experiment2_C_2_3_stressed_C1_squared_C0_lazy\16_1G_1T\');
 % 
 %%
 % ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
