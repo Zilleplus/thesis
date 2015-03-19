@@ -69,7 +69,7 @@ main(int argc, char *argv[])
     struct itimerspec *time_till_exp = malloc(sizeof(struct itimerspec));
 
     int N;
-    for(N=1;N<atoi(argv[1]);N=N+10){
+    for(N=1;N<atoi(argv[1]);N=N*10){
     	/* allocate the needed data on stack */
     	int i;int j;
     	double A[N],B[N],C[N],D[N];
@@ -100,6 +100,8 @@ main(int argc, char *argv[])
 }
 void dummy(double* A,double* B,double* C,double* D)
 {
-
+    int i;
+    for(i=0;i<100;i++)
+	 *A = *B + *C+*D ;
 }
 
