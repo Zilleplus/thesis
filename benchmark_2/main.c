@@ -6,12 +6,7 @@
 
 #include "../timerlib/timer.h"
 
-#define CLOCKID CLOCK_REALTIME
-#define SIG SIGRTMIN
-#define REPEAT 100
-
-#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); \
-                        } while (0)
+#define REPEAT 1000
 
 void dummy(double* A,double* B,double* C,double* D);
 int main(int argc, char *argv[])
@@ -26,7 +21,7 @@ int main(int argc, char *argv[])
         start_timer();
 	/* do the calulations */
     	for(j=1;j<REPEAT;j++){
-    	    for(i=1;i<N;i++){
+    	    for(i=0;i<N;i++){
     	         A[i] = B[i] + C[i] * D[i];	
     	        if((N+1)-N==0)
     	    	    dummy(A,B,C,D);
@@ -37,14 +32,15 @@ int main(int argc, char *argv[])
 	long timeExecute_s = getTime_s(); 
 	
 	/* find time for each calculation */
-	long timePerCalculation_ns =  (timeExecute_ns) / (N* REPEAT);
+	long timePerCalculation_ns =  timeExecute_ns / ((N) * (REPEAT-1)) ;
 	/* find operations per second */
-	/* send it to the terminal ~*/
-        //printf("DONE with: %i sec %i nsec thats %i nano seconds per calculation\n",timeExecute_s,timeExecute_ns,timePerCalulation_ns); 	    
-	printf("%i ",timePerCalculation_ns);
+	/* send it to the terminal */
+         //printf("DONE with: %ld sec %ld nsec thats %ld nano seconds per calculation\n",timeExecute_s,timeExecute_ns,timePerCalculation_ns); 	    
+	printf("%ld ",timePerCalculation_ns);
         fflush(stdout);
 
     }
+    fflush(stdout);
     exit(EXIT_SUCCESS);
 }
 void dummy(double* A,double* B,double* C,double* D)

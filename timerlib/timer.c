@@ -34,7 +34,7 @@ handler(int sig, siginfo_t *si, void *uc)
     /* Note: calling printf() from a signal handler is not
        strictly correct, since printf() is not async-signal-safe;
        see signal(7) */
-     printf("timeout %i \n"); fflush(stdout);
+     printf("timeout timer"); fflush(stdout);
      signal(sig, SIG_IGN);
 }
 
@@ -90,8 +90,8 @@ long getTime_ns(){
     return 999999999 - time_till_exp.it_value.tv_nsec; 
 }
 long getTime_s(){
-    void refreshTime();
-    return TIMEOUT-1 - time_till_exp.it_value.tv_sec; 
+    refreshTime();
+    return TIMEOUT - 1 -time_till_exp.it_value.tv_sec; 
 }
 void refreshTime(){
     timer_gettime(&timerid,&time_till_exp);

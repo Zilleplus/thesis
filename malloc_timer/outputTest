@@ -1,0 +1,4 @@
+
+test: 0 DONE 10000000 cycles of 2^32 calloc's in 2 sec 558539501 nsec 
+test: 0 DONE 10000000 cycles of 2^32 calloc's in 2 sec 817011249 nsec 
+test: 0 DONE 10000000 cycles of 2^32 calloc's in 3 sec 375232124 nsec 

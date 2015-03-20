@@ -34,7 +34,7 @@ handler(int sig, siginfo_t *si, void *uc)
     /* Note: calling printf() from a signal handler is not
        strictly correct, since printf() is not async-signal-safe;
        see signal(7) */
-     printf("timeout %i \n"); fflush(stdout);
+     printf("timeout timer ! \n"); fflush(stdout);
      signal(sig, SIG_IGN);
 }
 

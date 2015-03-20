@@ -30,11 +30,11 @@ init_gpio(void)
       printf("error open export file");
       return 1;
     }
-    fprintf(fp, "%d", 191);
+    fprintf(fp, "%d", 188);
     fclose(fp);
 
     /* SET THE DIRECTION */
-    fp = fopen("/sys/class/gpio/gpio191/direction", "w");
+    fp = fopen("/sys/class/gpio/gpio188/direction", "w");
     if( !fp )
     {
       printf("error open export file");
@@ -185,7 +185,7 @@ main(int argc, char *argv[])
     if (sigprocmask(SIG_UNBLOCK, &mask, NULL) == -1)
         errExit("sigprocmask");
     /* and wait forever */
-    output = fopen("/sys/class/gpio/gpio191/value", "w");
+    output = fopen("/sys/class/gpio/gpio188/value", "w");
     while(1) {
         if(needToggle==1){ /* if a signal flagged toggle */
             fprintf(output, "%d", gpio_state);
