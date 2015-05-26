@@ -56,7 +56,7 @@ xrange = 0:10;
 bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 512M');
 xlabel('absolute value');ylabel('probability');
 
-border =20;
+border =15;
 %variance delta
 delta_abs_32M(delta_abs_32M > border) = [];
 variance_delta_abs_32M=var(delta_abs_32M);

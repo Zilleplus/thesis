@@ -18,57 +18,84 @@ delta_abs_256K = abs(LoadTimes_256K - 100);
 delta_abs_512K = abs(LoadTimes_512K - 100);
 delta_abs_1M = abs(LoadTimes_1M - 100);
 
+border =15;
+title_head = 'abs(delta) 16 threads';
+
 % both of the pfs
 figure(1);
 subplot(3,2,1);
 xrange = 0:10;
 [f, x] = hist(delta_abs_32K ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 32K');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_32K(delta_abs_32K > border) = [];
+variance=var(delta_abs_32K);
+title_pdf = [title_head ' 32K var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
 subplot(3,2,2);
 xrange = 0:10;
 [f, x] = hist(delta_abs_64K ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta)1 thread 64K');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_64K(delta_abs_64K > border) = [];
+variance=var(delta_abs_64K);
+title_pdf = [title_head ' 64K var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
 subplot(3,2,3);
 xrange = 0:10;
 [f, x] = hist(delta_abs_128K ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 128K');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_128K(delta_abs_128K > border) = [];
+variance=var(delta_abs_128K);
+title_pdf = [title_head ' 128K var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
 subplot(3,2,4);
 xrange = 0:10;
 [f, x] = hist(delta_abs_256K ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 256K');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_256K(delta_abs_256K > border) = [];
+variance=var(delta_abs_256K);
+title_pdf = [title_head ' 256K var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
 subplot(3,2,5);
 xrange = 0:10;
 [f, x] = hist(delta_abs_512K ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 512K');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_512K(delta_abs_512K > border) = [];
+variance=var(delta_abs_512K);
+title_pdf = [title_head ' 512K var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
 subplot(3,2,6);
 xrange = 0:10;
 [f, x] = hist(delta_abs_1M ,xrange);
-bar(x, f/sum(f)/(x(2)-x(1)));title('PDF abs(delta) 1 thread 1M');
+bar(x, f/sum(f)/(x(2)-x(1)));
+
+delta_abs_1M(delta_abs_1M > border) = [];
+variance=var(delta_abs_1M);
+title_pdf = [title_head ' 1M var=' num2str(variance) ];
+title(title_pdf);
 xlabel('absolute value');ylabel('probability');
 
-border =20;
+
 %variance delta
-delta_abs_32K(delta_abs_32K > border) = [];
-variance_delta_abs_32K=var(delta_abs_32K);
 
-delta_abs_64K(delta_abs_64K > border) = [];
-variance_delta_abs_64K=var(delta_abs_64K);
 
-delta_abs_128K(delta_abs_128K > border) = [];
-variance_delta_abs_128K=var(delta_abs_128K);
 
-delta_abs_256K(delta_abs_256K > border) = [];
-variance_delta_abs_256K=var(delta_abs_256K);
 
-delta_abs_512K(delta_abs_512K > border) = [];
-variance_delta_abs_512K=var(delta_abs_512K);
+
+
+
+
